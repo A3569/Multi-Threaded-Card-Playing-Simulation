@@ -19,3 +19,24 @@ public class Thread implements Runnable {
     public void join();
 }
 ~~~
+
+## Stop a thread
+Setting a flag: Loop will exit (and thread will stop) on the next iteration after done is set to true
+~~~
+public void run () {
+  while (!done ){
+     //...
+  }
+}
+~~~
+Interrupting: 
+- As above, when isInterrupted() is called for this thread, it will stop
+- Except that if the thread is sleeping /waiting will throw InterruptedException and immediately return from run()
+
+~~~
+public void run() {
+  while (!isInterrupted()){
+    //...
+  }
+}
+~~~
