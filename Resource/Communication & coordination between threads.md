@@ -1,5 +1,3 @@
-# Thread lifecycle
-![image](https://github.com/user-attachments/assets/ea661afc-d5f9-45cb-a697-e4dbcf2bce06)
 
 ## 1. wait()
 - Defined in java.lang.Object.
