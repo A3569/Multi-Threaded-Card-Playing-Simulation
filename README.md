@@ -9,7 +9,7 @@
   - class Card.java  (Thread-safe)
   - class Player.java  (Thread-safe)
   - class CardDeck.java
-  - class CardGame.java (executable) 
+  - class CardGame.java (executable. Should distribute the hands to the players, fill the decks and start the required threads for the players. If the pack is invalid, the progran should inform the user of this, and request a valid pack file)
 - test file
   - testCard.java
   - testPlayer.java
@@ -26,11 +26,28 @@
 - four.txt (contains 8n cards) //Inside the pack file ???
 - README.md (detailing how to run your test suite)
   
-### Example of running CardGame.jar
+### Example of running CardGame.java
 ![image](https://github.com/user-attachments/assets/ce91e140-67ac-416b-9b32-79778638e592)
 
+### Example of output file:
+~~~
+    player 1 initial hand 1123
+    player 1 draws a 4 from deck 1
+    player 1 discards a 3 to deck 2
+    player 1 current handis 1124
+    play 1 wins / player 3 has informed player 1 that player 3 has won
+    play 1 exits
+    play 1 final hand: 1111 / 2235
+
+# There should be a message printed to the terminal window (as is the case when a player wins immediately), i.e. if the 4^{th} player wins, then
+    player 4 wins
+should be printed to the screen.
+~~~
+
 ## Attention
-1. The combination of a card draw, and a discard should be treated as a single atomic action. Therefore, at the end of the game every player should hold four cards
-2. A play can win with four cards which are all the same value at the start of the game, even it is not their preferred denomination. And then they should immediately printing "Player 1 wins", that player thread should notify the other threads, and exit
-3. Game progresses: each player picks a card from the top of the deck to their left and discards one to the bottom of the deck to their right
-4. 
+1. A play can win with four cards which are all the same value at the start of the game, even it is not their preferred denomination. And then they should immediately printing "Player 1 wins", that player thread should notify the other threads, and exit
+2. Game progresses: each player picks a card from the top of the deck to their left and discards one to the bottom of the deck to their right
+3. A player must not hold onto a non-preferred denomination card indefinitely
+4. Don't need to handle two or more players have four cards with the same value at the start of the game
+5. By multi-threading, players should not play the game sequentially, i.e., Not in a way that, when one player finishes actions another player starts
+6. The combination of a card draw, and a discard should be treated as a single atomic action. Therefore, at the end of the game every player should hold four cards
