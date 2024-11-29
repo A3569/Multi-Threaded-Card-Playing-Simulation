@@ -16,7 +16,7 @@
   - testCardDeck.java
 - output file
   - player1_output.txt  (every action of a player processing his hand should be printed in here)
-  - player2_output.txt
+  - player2_output.txt  (it would created by the code)
   - player3_output.txt
   - player4_output.txt
   - Deck1_output.txt  (single line of text detailing the contents of the deck at the end of the game)
