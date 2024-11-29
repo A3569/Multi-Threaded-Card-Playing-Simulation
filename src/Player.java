@@ -1,8 +1,5 @@
 public class Player {
   // Represents a player in the game, manages their hand, and handles game logic specific to players
-  // Private Variables
-  // Get methods
-  // Constructor
   // Player's hand
   // Checks that all cards are the same
   // Player's final hand
