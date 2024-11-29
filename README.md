@@ -10,7 +10,6 @@
   - class Player.java  (Thread-safe)
   - class CardDeck.java
   - class CardGame.java (executable. Should distribute the hands to the players, fill the decks and start the required threads for the players. If the pack is invalid, the progran should inform the user of this, and request a valid pack file)
-  - four.txt (contains 8n cards)
 - test file
   - testCard.java
   - testPlayer.java
@@ -25,6 +24,7 @@
   - Deck3_output.txt
   - Deck4_output.txt
 - README.md (detailing how to run your test suite)
+- four.txt (contains 8n cards)
   
 ### Example of running CardGame.java
 ![image](https://github.com/user-attachments/assets/ce91e140-67ac-416b-9b32-79778638e592)
