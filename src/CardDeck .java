@@ -1,4 +1,18 @@
 public class CardDeck {
+  // Private attribute
+  private final <Card> cards = new <Card>();
+  private final int id;
+  
+  // Creates a constructor
+  public Deck(int id) {
+    this.id = id;
+  }
+
+  // Get method
+  public int getID() {
+    reture id;
+  }
+  
   // Sets the initial cards of the deck
   // Adds a card to the deck
   // Removes the top card from the deck
