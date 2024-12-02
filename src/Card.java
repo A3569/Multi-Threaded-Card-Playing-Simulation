@@ -3,7 +3,7 @@ public class Card {
   // Private attribute
   private final int number;
 
-  // Created a constructor
+  // Create a constructor
   public Card(int number) {
     this.number = number;
   }
