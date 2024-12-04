@@ -28,6 +28,9 @@ public class CardDeck {
     cards.remove(cards);
   }
   
-  // Creates a new output file for the deck
   // Writes the deck's final values to the file and closes it
+  public writeOutputfile() {
+    FileWriter fw = new FileWriter("./outputfile/deck" + "id" + "_output.txt");
+    fw.write()
+  }
 }
