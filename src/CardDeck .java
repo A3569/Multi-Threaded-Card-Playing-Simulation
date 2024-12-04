@@ -29,7 +29,7 @@ public class CardDeck {
   }
 
   // contain the contents of the deck at the end of the game
-  public getFinalDeck() {
+  public String getFinalDeck() {
     String finaldeck = "deck" + id + "contents: ";
   }
   
