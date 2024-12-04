@@ -19,6 +19,8 @@ public class CardDeck {
   }
   
   // Adds a card to the deck
+  public addCard() {
+    
   // Removes the top card from the deck
   // Creates a new output file for the deck
   // Writes the deck's final values to the file and closes it
