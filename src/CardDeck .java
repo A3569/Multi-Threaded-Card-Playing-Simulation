@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+import java.io.IOException;
+import java.io.FileWriter;
+
 public class CardDeck {
   // Private attribute
-  private final <Card> cards = new <Card>();
+  private final ArrayList<Card> cards = new ArrayList<Card>();
   private final int id;
   
   // Creates a constructor
