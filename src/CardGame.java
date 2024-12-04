@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class CardGame {
   // Main method to run the game
   public static void main (String[] args){
@@ -11,9 +13,8 @@ public class CardGame {
         }
   }
   // Starts and runs the game
-import java.util.Scanner;
 
-class Main {                                             // when trying to run on VSC, keeps coming up that Main could not be loaded?
+class Main {                                             // when trying to run on VSC, keeps coming up that Main could not be loaded? Cuz there are two main method that creates ambiguity
   public static void main(String[]args) {
       Scanner beginGame = new Scanner(System.in); 
       System.out.printIn("Please enter the number of players in the group:");
@@ -29,7 +30,6 @@ class Main {                                             // when trying to run o
   }
 }
   
-
   // Sets up the card game
   // Ends to the game
 }
