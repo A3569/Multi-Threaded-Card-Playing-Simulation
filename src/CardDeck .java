@@ -15,7 +15,7 @@ public class CardDeck {
   
   // Sets the initial cards of the deck
   public initialCards() {
-    this cards = cards;
+    this.cards = cards;
   }
   
   // Adds a card to the deck
