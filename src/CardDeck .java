@@ -31,7 +31,7 @@ public class CardDeck {
   // Writes the deck's final values to the file and closes it
   public writeOutputfile() {
     try{
-      FileWriter fw = new FileWriter("./outputfile/deck" + id + "_output.txt");
+      FileWriter fw = new FileWriter("./output/deck" + id + "_output.txt");
     fw.write("deck" + id + "contents: " + this.initialCards());
     fw.close();
   } catch (Exception e){
