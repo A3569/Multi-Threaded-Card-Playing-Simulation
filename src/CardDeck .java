@@ -27,12 +27,17 @@ public class CardDeck {
   public removeCard(Card cards) {
     cards.remove(cards);
   }
+
+  // contain the contents of the deck at the end of the game
+  public getFinalDeck() {
+    String finaldeck = "deck" + id + "contents: ";
+  }
   
   // Writes the deck's final values to the file and closes it
   public writeOutputfile() {
     try{
       FileWriter fw = new FileWriter("./output/deck" + id + "_output.txt");
-    fw.write("deck" + id + "contents: " + this.initialCards());
+    fw.write(this.getFinalDeck());
     fw.close();
   } catch (Exception e){
             e.printStackTrace();
