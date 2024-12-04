@@ -25,7 +25,7 @@ public class CardDeck {
   
   // Removes the top card from the deck
   public removeCard(Card cards) {
-    cards.remove(cards);
+    cards.remove(0);
   }
 
   // contain the contents of the deck at the end of the game
