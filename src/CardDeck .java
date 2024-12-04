@@ -26,10 +26,11 @@ public class CardDeck {
   // Removes the top card from the deck
   public Card removeCard() {
     if (!cards.isEmpty()) {
-            return cards.remove(0); // Removes the first card (top of the deck)
-        } else {
-            return null; // Returns null if the deck is empty
+            if (cards.isEmpty()) {
+            throw new IllegalStateException("The deck is empty.");
         }
+        return cards.remove(0);
+    }
   }
 
   // contain the contents of the deck at the end of the game
