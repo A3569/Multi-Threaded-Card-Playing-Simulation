@@ -37,9 +37,9 @@ public class CardDeck {
   public writeOutputfile() {
     try{
       FileWriter fw = new FileWriter("./output/deck" + id + "_output.txt");
-    fw.write(this.getFinalDeck());
-    fw.close();
-  } catch (Exception e){
+      fw.write(this.getFinalDeck());
+      fw.close();
+    } catch (Exception e){
             e.printStackTrace();
         }
 }
