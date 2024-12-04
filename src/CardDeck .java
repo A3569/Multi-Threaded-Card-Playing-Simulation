@@ -34,5 +34,7 @@ public class CardDeck {
       FileWriter fw = new FileWriter("./outputfile/deck" + id + "_output.txt");
     fw.write("deck" + id + "contents: " + this.initialCards());
     fw.close();
-  } 
+  } catch (Exception e){
+            e.printStackTrace();
+        }
 }
