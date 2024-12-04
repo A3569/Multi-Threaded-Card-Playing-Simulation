@@ -39,7 +39,9 @@ public class CardDeck {
 
   // contain the contents of the deck at the end of the game
   public String getFinalDeck() {
-    String finaldeck = "deck" + id + "contents: ";
+    for(Card cards: cards) {
+      String finaldeck = "deck" + id + "contents: " + card.getNumber();
+    }
   }
   
   // Writes the deck's final values to the file and closes it
