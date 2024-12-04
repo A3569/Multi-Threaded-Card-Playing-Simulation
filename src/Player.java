@@ -1,4 +1,4 @@
-public class Player {
+public class Player implements Runnable {
   // Represents a player in the game, manages their hand, and handles game logic specific to players
   // Player's hand
   // Checks that all cards are the same
