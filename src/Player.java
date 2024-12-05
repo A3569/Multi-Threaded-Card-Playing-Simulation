@@ -6,11 +6,11 @@ public class Player implements Runnable {
   // Player's final hand
   
   // Updates the player's file
-  public writeOutputfile() {
+  public synchronized writeOutputfile() {
     try{
       FileWriter fw = new FileWriter("./output/player" + id + "_output.txt");
-    fw.write("player" + id + "contents: " + this.());
-    fw.close();
+      fw.write("player" + id + "contents: " + this.());
+      fw.close();
   } catch (Exception e){
             e.printStackTrace();
         }
