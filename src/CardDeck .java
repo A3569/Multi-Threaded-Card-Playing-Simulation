@@ -30,7 +30,7 @@ public class CardDeck {
   // Removes the top card from the deck
   public synchronized Card removeCard() {
     if (cards.isEmpty()) {
-            throw new IllegalStateException("The deck is empty.");
+            throw new IllegalStateException("The deck " + id + " is empty.");
         }
         return cards.remove(0);
     }
@@ -43,6 +43,7 @@ public class CardDeck {
       fw.write(this.getFinalDeck());
       fw.close();
     } catch (Exception e){
+            System.err.println("Error writing for deck " + id);
             e.printStackTrace();
         }
   }
