@@ -23,12 +23,12 @@ public class CardDeck {
   }
   
   // Adds a card to the deck
-  public void addCard(Card card) {
+  public synchronized void addCard(Card card) {
     cards.add(card);
   }
   
   // Removes the top card from the deck
-  public Card removeCard() {
+  public synchronized Card removeCard() {
     if (cards.isEmpty()) {
             throw new IllegalStateException("The deck is empty.");
         }
@@ -37,7 +37,7 @@ public class CardDeck {
   }
 
   // Writes the deck's final values to the file and closes it
-  public writeOutputfile() {
+  public synchronized writeOutputfile() {
     try{
       FileWriter fw = new FileWriter("./output/deck" + id + "_output.txt");
       fw.write(this.getFinalDeck());
