@@ -1,5 +1,4 @@
 public class Card { 
-  // Represents an individual card in the game
   // Private attribute
   private final int number;
 
