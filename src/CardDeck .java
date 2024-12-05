@@ -4,46 +4,38 @@ import java.io.FileWriter;
 
 public class CardDeck {
   // Private attribute
-  private final ArrayList<Card> cards = new ArrayList<Card>();
+  private final ArrayList<Card> cards = new ArrayList<>();
   private final int id;
   
-  // Creates a constructor
-  public Deck(int id) {
+  // Constructor
+  public CardDeck(int id) {
     this.id = id;
   }
 
-  // Get method
+  // Get method for ID
   public int getID() {
-    reture id;
+    return id;
   }
   
   // Sets the initial cards of the deck
-  public initialCards() {
+  public void initialCards() {
     this.cards = cards;
   }
   
   // Adds a card to the deck
-  public addCard(Card cards) {
-    cards.add(cards);
+  public void addCard(Card card) {
+    cards.add(card);
   }
   
   // Removes the top card from the deck
   public Card removeCard() {
-    if (!cards.isEmpty()) {
-            if (cards.isEmpty()) {
+    if (cards.isEmpty()) {
             throw new IllegalStateException("The deck is empty.");
         }
         return cards.remove(0);
     }
   }
 
-  // contain the contents of the deck at the end of the game
-  public String getFinalDeck() {
-    for(Card cards: cards) {
-      String finaldeck = "deck" + id + "contents: " + card.getNumber();
-    }
-  }
-  
   // Writes the deck's final values to the file and closes it
   public writeOutputfile() {
     try{
@@ -53,4 +45,14 @@ public class CardDeck {
     } catch (Exception e){
             e.printStackTrace();
         }
+  }
+
+  // contain the contents of the deck at the end of the game
+  public String getFinalDeck() {
+    String finalDeck = "Deck " + id + " contents:";
+    for (Card card : cards) {
+        finalDeck.append(" ").append(card.getNumber());
+    }
+    return finalDeck;
+  }
 }
