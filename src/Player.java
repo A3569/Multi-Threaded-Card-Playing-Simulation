@@ -10,6 +10,7 @@ public class Player implements Runnable {
   private CardDeck drawDeck;       // Decks used for drawing cards
   private CardDeck discardDeck;    // Decks used for discarding cards
   private CardGame cardGame;
+  private FileWriter fw; 
 
   // Constructor
   public Player(int id, ArrayList<Card> card, CardDeck drawDeck, CardDeck discardDeck) {
@@ -42,7 +43,7 @@ public class Player implements Runnable {
   // check if a player win
   public synchronized boolean checkWin() {
     if(cards.size() != 4){
-            return false;
+      return false;
     }
     
     int firstRank = cards.get(0).getNumber();
@@ -69,11 +70,11 @@ public class Player implements Runnable {
     for(int i=0; i < cards.size(); i++){
             if(cards.get(i).getNumber() != id){
                 Card drawDeck = cards.get(i);
-                discordDeck.addCard(cards.remove(i));
+                discardDeck.addCard(cards.remove(i));
                 Card newCard = drawDeck.removeCard();
                 cards.add(newCard);
 
-                writeOutputfile(drawDeck, newCard);
+                writeOutputfile("update", drawDeck, newCard, -1);
                 break;
             }
         }
@@ -81,46 +82,44 @@ public class Player implements Runnable {
     }
 
   // creates, updates, and closes the player's outputfile
-  public synchronized void writeOutputfile(String operation, Card drawDeck, Card newCard, int winnerID) {
+  public synchronized void writeOutputfile(String operation, CardDeck drawDeck, Card newCard, int winnerID) {
     try{
-      if ("create".equals(operation)) {
-        // create player's output file
-        File file = new File("./output/player" + id + "_output.txt");
-        if (file.createNewFile()) {
-          System.out.println("File is created");
-        }
-        
-        // write initial player's hand
-        fw.write(this.getInitialCard() + "\n");
-        System.out.println(this.getInitialCard());
-        }
-      } else if ("update".equals(operation)) {
-        // updates player's hand
-        fw.write("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
-        System.out.println("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID());
-        
-        fw.write("player " + id + " discards a " + drawDeck.getNumber() + " to deck " + discordDeck.getID() + "\n");
-        System.out.println("player " + id + " discards a " + drawDeck.getNumber() + " to deck " + discordDeck.getID());
-        
-        fw.write(this.getCurrentCard() + "\n");
-        System.out.println(this.getCurrentCard());
-        
-      } else if ("finalize".equals(operation)) {
-        // write the final hand and close the writer
-        if (winnerID != id) {
-        fw.write("player " + id + " wins" + "\n");
-        System.out.println("player " + id + " wins");
-        } else {
-          fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won \n");
-          System.out.println("player " + winnerID + " wins");
-        }
-        
-        fw.write("player " + id + " exits");
-        fw.write(this.getFinalCard());
-        fw.close();
-      } else {
-        System.out.println("Invalid operation type.");
+      // create player's output file
+      if (fw == null) {
+        fw = new FileWriter("./output/player" + id + "_output.txt", true);
       }
+      // write initial player's hand
+      if ("create".equals(operation)) {
+        fw.write(this.getInitialCard() + "\n");
+        System.out.println(getInitialCard());
+      }
+        // updates player's hand
+        else if ("update".equals(operation)) {
+          fw.write("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
+          System.out.println("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID());
+        
+          fw.write("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID() + "\n");
+          System.out.println("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID());
+        
+          fw.write(this.getCurrentCard() + "\n");
+          System.out.println(getCurrentCard());
+        } 
+          // write the final hand and close the writer
+          else if ("finalize".equals(operation)) {
+            if (winnerID == id) {
+              fw.write("player " + id + " wins" + "\n");
+              System.out.println("player " + id + " wins");
+            } else {
+              fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won \n");
+              System.out.println("player " + winnerID + " wins");
+            }
+        
+            fw.write("player " + id + " exits");
+            fw.write(this.getFinalCard());
+            fw.close();
+          } else {
+            System.out.println("Invalid operation type.");
+          }
     } catch (IOException e) {
       System.out.println("Error occurred while handling the outputfile.");
       e.printStackTrace();
