@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.io.IOException;
 import java.io.FileWriter;
+import java.io.StringBuilder;
 
 public class CardDeck {
   // Private attribute
@@ -50,10 +51,12 @@ public class CardDeck {
 
   // contain the contents of the deck at the end of the game
   public String getFinalDeck() {
-    String finalDeck = "Deck " + id + " contents:";
+    StringBuilder finalDeck = new StringBuilder("Deck ")
+        .append(id)
+        .append(" contents:");
     for (Card card : cards) {
-        finalDeck.append(" ").append(card.getNumber());
+      finalDeck.append(" ").append(card.getNumber());
     }
-    return finalDeck;
+    return finalDeck.toString();
   }
 }
