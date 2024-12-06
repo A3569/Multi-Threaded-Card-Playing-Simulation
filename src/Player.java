@@ -5,16 +5,17 @@ import java.io.IOException;
 public class Player implements Runnable {
   // Private attribute
   private final int id;            // identifier for players
+  private ArrayList<Card> card;    // holds the current hand of the player throughout the game
   private CardDeck drawDeck;       // Decks used for drawing cards
   private CardDeck discardDeck;    // Decks used for discarding cards
-  private ArrayList<Card> card;    // holds the current hand of the player throughout the game
+  private CardGame cardGame;
 
   // Constructor
-  public Player(int id, CardDeck drawDeck, CardDeck discardDeck, ArrayList<Card> card) {
+  public Player(int id, ArrayList<Card> card, CardDeck drawDeck, CardDeck discardDeck) {
     this.id = id;
+    this.card = new ArrayList<>(card);
     this.drawDeck = drawDeck;
     this.discardDeck = discardDeck;
-    this.card = new ArrayList<>(card);
   }
 
   // gets player's ID
@@ -38,15 +39,53 @@ public class Player implements Runnable {
   }
   
   // check if a player win
-  // get rid of unwanted card 
-  
+  public synchronized boolean checkWin() {
+    if(cards.size() != 4){
+            return false;
+    }
+    
+    int firstRank = cards.get(0).getNumber();
+    boolean allSame = cards.stream().allMatch(card -> card.getNumber() == firstRank);
+    if (allSame) {
+      cardGame.finished(id);
+      return true;
+    }
+    return false;
+  }
+
+  // handles the player's turn by discarding and drawing cards
+  public synchronized boolean playing() {
+    if (Thread.currentThread().isInterrupted()) {
+        return false;
+    }
+
+    while (drawDeck.getCards().isEmpty()) {
+        if (Thread.currentThread().isInterrupted()) {
+            return false;
+        }
+    }
+
+    for(int i=0; i < cards.size(); i++){
+            if(cards.get(i).getNumber() != id){
+                Card drawDeck = cards.get(i);
+                discordDeck.addCard(cards.remove(i));
+                Card discordDeck = drawDeck.removeCard();
+                cards.add(newCard);
+
+                writeOutputfile(drawDeck, newCard);
+                break;
+            }
+        }
+        return true;
+    }
+
   // creates, initializes, updates, and closes the player's outputfile
   public synchronized void writeOutputfile(String operation, int winnerID) {
     try{
       if ("create".equals(operation)) {
         // create player's output file
         File file = new File("./output/player" + id + "_output.txt");
-        if (file != null) {
+        if (file.createNewFile()) {
           System.out.println("File is created");
         }
       } else if ("initialize".equals(operation)) {
