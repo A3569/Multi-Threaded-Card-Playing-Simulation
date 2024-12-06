@@ -5,16 +5,16 @@ import java.io.IOException;
 public class Player implements Runnable {
   // Private attribute
   private final int id;            // identifier for players
+  private CardDeck drawDeck;       // Decks used for drawing cards
+  private CardDeck discardDeck;    // Decks used for discarding cards
   private ArrayList<Card> card;    // holds the current hand of the player throughout the game
-  private FileWriter fw;           // filewriter for logging player actions
 
   // Constructor
-  public Player(int id, CardDeck drawDeck, CardDeck discardDeck, ArrayList<Card> card, CardGame cardgame) {
+  public Player(int id, CardDeck drawDeck, CardDeck discardDeck, ArrayList<Card> card) {
     this.id = id;
     this.drawDeck = drawDeck;
     this.discardDeck = discardDeck;
     this.card = new ArrayList<>(card);
-    this.cardgame = cardgame;
   }
 
   // gets player's ID
@@ -26,6 +26,16 @@ public class Player implements Runnable {
   public ArrayList<Card> getPlayerCards(){
         return card;
     }
+
+   // returns the deck the player draws cards from
+  public Deck getDrawDeck() {
+    return drawDeck;
+  }
+
+  // returns the deck the player discards cards to
+  public Deck getDiscardDeck() {
+    return discardDeck;
+  }
   
   // check if a player win
   // get rid of unwanted card 
