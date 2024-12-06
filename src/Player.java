@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringBuilder;
 
 public class Player implements Runnable {
   // Private attribute
@@ -69,7 +70,7 @@ public class Player implements Runnable {
             if(cards.get(i).getNumber() != id){
                 Card drawDeck = cards.get(i);
                 discordDeck.addCard(cards.remove(i));
-                Card discordDeck = drawDeck.removeCard();
+                Card newCard = drawDeck.removeCard();
                 cards.add(newCard);
 
                 writeOutputfile(drawDeck, newCard);
@@ -79,8 +80,8 @@ public class Player implements Runnable {
         return true;
     }
 
-  // creates, initializes, updates, and closes the player's outputfile
-  public synchronized void writeOutputfile(String operation, int winnerID) {
+  // creates, updates, and closes the player's outputfile
+  public synchronized void writeOutputfile(String operation, String getInitialCard, String getCurrentCard, String getFinalCard, Card drawDeck, Card newCard, int winnerID) {
     try{
       if ("create".equals(operation)) {
         // create player's output file
@@ -88,34 +89,34 @@ public class Player implements Runnable {
         if (file.createNewFile()) {
           System.out.println("File is created");
         }
-      } else if ("initialize".equals(operation)) {
-        // write initial player's hand
-        fw.write("player" + id + "initial hand: " + "\n");
-        System.out.println("player" + id + "initial hand: ");
         
+        // write initial player's hand
+        fw.write(getInitialCard + "\n");
+        System.out.println(getInitialCard);
+        }
       } else if ("update".equals(operation)) {
         // updates player's hand
-        fw.write("player " + id + " draws " + " from deck " + "\n");
-        System.out.println("player " + id + " draws " + " from deck ");
+        fw.write("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
+        System.out.println("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID());
         
-        fw.write("player " + id + " discards a " + " to deck " + "\n");
-        System.out.println("player " + id + " discards a " + " to deck ");
+        fw.write("player " + id + " discards a " + drawDeck.getNumber() + " to deck " + discordDeck.getID() + "\n");
+        System.out.println("player " + id + " discards a " + drawDeck.getNumber() + " to deck " + discordDeck.getID());
         
-        fw.write("player " + id + " current hand is " + "\n");
-        System.out.println("player " + id + " current hand is ");
+        fw.write(getCurrentCard + "\n");
+        System.out.println(getCurrentCard);
         
       } else if ("finalize".equals(operation)) {
         // write the final hand and close the writer
         if (winnerID != id) {
-        fw.write("player " + id + " wins");
+        fw.write("player " + id + " wins" + "\n");
         System.out.println("player " + id + " wins");
         } else {
-          fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won\n");
+          fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won \n");
           System.out.println("player " + winnerID + " wins");
         }
         
-        fw.write("player " + id + " exits\n");
-        fw.write(card.getFinalDeck());
+        fw.write("player " + id + " exits");
+        fw.write(getFinalCard);
         fw.close();
       } else {
         System.out.println("Invalid operation type.");
@@ -123,5 +124,38 @@ public class Player implements Runnable {
     } catch (IOException e) {
       System.out.println("Error occurred while handling the outputfile.");
       e.printStackTrace();
+    }
+
+    // Creates a string for the player's initial hand
+    public String getInitialCard() {
+    StringBuilder initialCard = new StringBuilder("player ")
+        .append(id)
+        .append(" intial hand:");
+      for (Card card : cards) {
+        initialCard.append(" ").append(card.getNumber());
+      }
+      return initialCard.toString();
+    }
+
+    // Creates a string for the player's current hand
+    public String getCurrentCard() {
+    StringBuilder currentCard = new StringBuilder("player ")
+        .append(id)
+        .append(" current hand:");
+      for (Card card : cards) {
+        currentCard.append(" ").append(card.getNumber());
+      }
+      return currentCard.toString();
+    }
+
+    // Creates a string for the player's final hand
+    public String getFinalCard() {
+    StringBuilder finalCard = new StringBuilder("player ")
+        .append(id)
+        .append(" final hand:");
+      for (Card card : cards) {
+        finalCard.append(" ").append(card.getNumber());
+      }
+      return finalCard.toString();
     }
 }
