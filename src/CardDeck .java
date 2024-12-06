@@ -5,26 +5,25 @@ import java.io.StringBuilder;
 
 public class CardDeck {
   // Private attribute
-  private final ArrayList<Card> cards = new ArrayList<>();
+  private final ArrayList<Card> cards;
   private final int id;
   
   // Constructor
   public CardDeck(int id) {
     this.id = id;
+    this.cards = new ArrayList<>();
   }
 
-  // Get method for ID
+  // Get the ID of the deck
   public int getID() {
     return id;
   }
   
-  // Sets the initial cards of the deck
-  public void initialCards() {
-    this.cards = cards;
-  }
-  
   // Adds a card to the deck
   public synchronized void addCard(Card card) {
+    if (card == null) {
+      throw new IllegalArgumentException("Card cannot be null.");
+    }
     cards.add(card);
   }
   
@@ -42,7 +41,6 @@ public class CardDeck {
     try{
       FileWriter fw = new FileWriter("./output/deck" + id + "_output.txt");
       fw.write(this.getFinalDeck());
-      fw.close();
     } catch (Exception e){
             System.err.println("Error writing for deck " + id);
             e.printStackTrace();
@@ -50,7 +48,7 @@ public class CardDeck {
   }
 
   // contain the contents of the deck at the end of the game
-  public String getFinalDeck() {
+  public synchronized String getFinalDeck() {
     StringBuilder finalDeck = new StringBuilder("Deck ")
         .append(id)
         .append(" contents:");
