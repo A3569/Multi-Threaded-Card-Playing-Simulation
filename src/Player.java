@@ -81,7 +81,7 @@ public class Player implements Runnable {
     }
 
   // creates, updates, and closes the player's outputfile
-  public synchronized void writeOutputfile(String operation, String getInitialCard, String getCurrentCard, String getFinalCard, Card drawDeck, Card newCard, int winnerID) {
+  public synchronized void writeOutputfile(String operation, Card drawDeck, Card newCard, int winnerID) {
     try{
       if ("create".equals(operation)) {
         // create player's output file
@@ -91,8 +91,8 @@ public class Player implements Runnable {
         }
         
         // write initial player's hand
-        fw.write(getInitialCard + "\n");
-        System.out.println(getInitialCard);
+        fw.write(this.getInitialCard() + "\n");
+        System.out.println(this.getInitialCard());
         }
       } else if ("update".equals(operation)) {
         // updates player's hand
@@ -102,8 +102,8 @@ public class Player implements Runnable {
         fw.write("player " + id + " discards a " + drawDeck.getNumber() + " to deck " + discordDeck.getID() + "\n");
         System.out.println("player " + id + " discards a " + drawDeck.getNumber() + " to deck " + discordDeck.getID());
         
-        fw.write(getCurrentCard + "\n");
-        System.out.println(getCurrentCard);
+        fw.write(this.getCurrentCard() + "\n");
+        System.out.println(this.getCurrentCard());
         
       } else if ("finalize".equals(operation)) {
         // write the final hand and close the writer
@@ -116,7 +116,7 @@ public class Player implements Runnable {
         }
         
         fw.write("player " + id + " exits");
-        fw.write(getFinalCard);
+        fw.write(this.getFinalCard());
         fw.close();
       } else {
         System.out.println("Invalid operation type.");
