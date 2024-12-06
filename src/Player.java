@@ -4,23 +4,58 @@ import java.io.IOException;
 
 public class Player implements Runnable {
   // Private attribute
-  private int id;
-  private ArrayList<Card> card;
+  private final int id;            // identifier for players
+  private CardDeck drawDeck;       // Decks used for drawing cards
+  private CardDeck discardDeck;    // Decks used for discarding cards
+  private ArrayList<Card> card;    // holds the current hand of the player throughout the game
+  private final CardGame cardgame; // reference to CardGame.java
+  private FileWriter fw;           // filewriter for logging player actions
+
+  // Constructor
+  public Player(int id, CardDeck drawDeck, CardDeck discardDeck, ArrayList<Card> card, CardGame cardgame) {
+    this.id = id;
+    this.drawDeck = drawDeck;
+    this.discardDeck = discardDeck;
+    this.card = new ArrayList<>(card);
+    this.cardgame = cardgame;
+  }
+
+  // gets player's ID
+  public int getID() {
+    return id;
+  }
+
+  // returns the deck the player draws cards from
+  public Deck getDrawDeck() {
+    return drawDeck;
+  }
+
+  // returns the deck the player discards cards to
+  public Deck getDiscardDeck() {
+    return discardDeck;
+  }
+
+  //
+  public ArrayList<Card> getPlayerCards(){
+        return card;
+    }
   
-  // Represents a player in the game, manages their hand, and handles game logic specific to players
-  // Player's hand
-  // Checks that all cards are the same
+  // check if a player win
   // get rid of unwanted card 
-  // Player's final hand
   
-  // Updates the player's outputfile
+  // creates, initializes, updates, and closes the player's outputfile
   public synchronized void writeOutputfile(String operation, int winnerID) {
     try{
-      if ("initialize".equals(operation)) {
+      if ("create".equals(operation)) {
+        // create player's output file
+        File file = new File("./output/player" + id + "_output.txt");
+        if (file != null) {
+          System.out.println("File is created");
+        }
+      } else if ("initialize".equals(operation)) {
         // write initial player's hand
-        FileWriter fw = new FileWriter("./output/player" + id + "_output.txt");
-        fw.write("player" + id + "initial hand: " + startingCards + "\n");
-        System.out.println(startingCards);
+        fw.write("player" + id + "initial hand: " + "\n");
+        System.out.println("player" + id + "initial hand: ");
         
       } else if ("update".equals(operation)) {
         // updates player's hand
@@ -28,12 +63,10 @@ public class Player implements Runnable {
         System.out.println("player " + id + " draws " + " from deck ");
         
         fw.write("player " + id + " discards a " + " to deck " + "\n");
-        System.out.println("player " + id + " discards a " + " to deck " );
+        System.out.println("player " + id + " discards a " + " to deck ");
         
         fw.write("player " + id + " current hand is " + "\n");
         System.out.println("player " + id + " current hand is ");
-        
-        fw.write( + "\n");
         
       } else if ("finalize".equals(operation)) {
         // write the final hand and close the writer
