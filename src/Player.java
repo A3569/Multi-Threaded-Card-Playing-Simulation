@@ -22,16 +22,6 @@ public class Player implements Runnable {
     return id;
   }
 
-  // returns the deck the player draws cards from
-  public Deck getDrawDeck() {
-    return drawDeck;
-  }
-
-  // returns the deck the player discards cards to
-  public Deck getDiscardDeck() {
-    return discardDeck;
-  }
-
   //
   public ArrayList<Card> getPlayerCards(){
         return card;
