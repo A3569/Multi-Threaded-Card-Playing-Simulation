@@ -5,10 +5,7 @@ import java.io.IOException;
 public class Player implements Runnable {
   // Private attribute
   private final int id;            // identifier for players
-  private CardDeck drawDeck;       // Decks used for drawing cards
-  private CardDeck discardDeck;    // Decks used for discarding cards
   private ArrayList<Card> card;    // holds the current hand of the player throughout the game
-  private final CardGame cardgame; // reference to CardGame.java
   private FileWriter fw;           // filewriter for logging player actions
 
   // Constructor
