@@ -2,7 +2,7 @@ public class Card {
   // Private attribute
   private final int number;
 
-  // Create a constructor
+  // Constructor
   public Card(int number) {
     this.number = number;
   }
