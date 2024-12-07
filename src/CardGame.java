@@ -21,12 +21,12 @@ public class CardGame {                                             // when tryi
       System.out.println("Please enter the number of players in the group:");
 
       int playersNumber = beginGame.nextInt();                           // get user input of players
-      System.out.println = ("Number of players: " + playersNumber);      // print results 
+      System.out.println("Number of players: " + playersNumber);      // print results 
 
       System.out.println("Please enter location of card deck to load:");
 
       String deckLocation = beginGame.nextInt();                         // get location of deck of cards
-      System.out.println = ("Location of deck: " + deckLocation);        // print results 
+      System.out.println("Location of deck: " + deckLocation);        // print results 
       
       try{
         
