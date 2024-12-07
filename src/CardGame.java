@@ -18,15 +18,15 @@ public class CardGame {                                             // when tryi
   public static void main(String[]args) {
       Scanner beginGame = new Scanner(System.in); 
       System.out.println("Welcome to the Card Game!");
-      System.out.printIn("Please enter the number of players in the group:");
+      System.out.println("Please enter the number of players in the group:");
 
       int playersNumber = beginGame.nextInt();                           // get user input of players
-      System.out.printIn = ("Number of players: " + playersNumber);      // print results 
+      System.out.println = ("Number of players: " + playersNumber);      // print results 
 
-      System.out.printIn("Please enter location of card deck to load:");
+      System.out.println("Please enter location of card deck to load:");
 
       String deckLocation = beginGame.nextInt();                         // get location of deck of cards
-      System.out.printIn = ("Location of deck: " + deckLocation);        // print results 
+      System.out.println = ("Location of deck: " + deckLocation);        // print results 
       
       try{
         
@@ -37,5 +37,14 @@ public class CardGame {                                             // when tryi
 }
   
   // Sets up the card game
+  // read the input pack
+  // if the pack is invalid, notify user and request new pack
+
+  // distribute the hands to the players
+
+  // fill the decks
+
+  // start required threads
+
   // Ends to the game
 }
