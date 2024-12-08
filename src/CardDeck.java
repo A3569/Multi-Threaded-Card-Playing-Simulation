@@ -1,12 +1,11 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class CardDeck {
   // Private attribute
-  private final List<Card> cards;
+  private final ArrayList<Card> cards;
   private final int id;
   
   // Constructor
@@ -15,9 +14,14 @@ public class CardDeck {
     this.cards = new ArrayList<>();
   }
 
-  // Get the ID of the deck
+  // Get ID
   public int getID() {
     return id;
+  }
+
+  // Get cards
+  public ArrayList<Card> getCards() {
+    return cards;
   }
   
   // Adds a card to the deck
