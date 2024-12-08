@@ -34,7 +34,6 @@ public class CardGame {                                             // when tryi
         e.printStackTrace();
       }
   }
-}
   
   // Sets up the card game
   // read the input pack
@@ -47,4 +46,7 @@ public class CardGame {                                             // when tryi
   // start required threads
 
   // Ends to the game
+  public void finished(int playerId) {
+    System.out.println("Player " + playerId + " has won the game!");
+  }
 }
