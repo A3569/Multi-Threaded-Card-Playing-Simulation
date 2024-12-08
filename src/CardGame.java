@@ -3,19 +3,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class CardGame extend Thread {
+public class CardGame {
   // Attributes
   private final ArrayList<Player> players;
-  private final ArrayList<Deck> decks;
+  private final ArrayList<CardDeck> decks;
   private boolean gameFinished = false;
-  private int winnerId = -1;
+  private int winnerID = -1;
 
   // Constructors
   public CardGame(int playersNumber, String deckLocation) {
     players = new ArrayList<>();
     decks = new ArrayList<>();
 
-    // initializes decks and read the card pack
+    // reads the card pack
     ArrayList<Card> cardPack = readCardPack(deckLocation, playersNumber);
     if (cardPack == null) {
       System.out.println("Failed to initialize game");
@@ -25,7 +25,7 @@ public class CardGame extend Thread {
     for (int i = 1; i <= playersNumber; i++) {
       decks.add(new Deck(i));
     }
-    // distributes cards to players and decks
+    // distributes cards to players
     for (int i = 0; i < playersNumber; i++) {
       ArrayList<Card> hand = new ArrayList<>(cardPack.subList(i * 4, i * 4 + 4));
       CardDeck drawDeck = (i == 0) ? decks.get(decks.size() - 1) : decks.get(i - 1);
@@ -47,6 +47,7 @@ public class CardGame extend Thread {
     } catch (NumberFormatException e) {
       System.out.println("Invalid input. Please enter valid number of players.");
     } catch (Exception e){
+      System.out.println("An error occurred: " + e.getMessage());
       e.printStackTrace();
     }
   }
@@ -62,6 +63,9 @@ public class CardGame extend Thread {
         }
         cards.add(new Card(number));
       }
+    } catch (FileNotFoundException e) {
+      System.out.println("Card pack file not found: " + e.getMessage());
+      return null;
     } catch (Exception e) {
       System.out.println("Error reading card pack: " + e.getMessage());
       return null;
@@ -85,7 +89,7 @@ public class CardGame extend Thread {
       try {
         thread.join();
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        System.out.println("Thread interrupted: " + e.getMessage());
       }
     }
     System.out.println("Player " + winnerID + "has won");
@@ -103,7 +107,7 @@ public class CardGame extend Thread {
   // writes final game summary to the output file
   public void writeGameSummary() {
     for(Player player : players) {
-      player.writeOutputfile("finalize", null, null, winnerID);
+      player.writeOutputfile(winnerID);
     }
     for(Deck deck: decks) {
       cardDeck.writeOutputFile();
