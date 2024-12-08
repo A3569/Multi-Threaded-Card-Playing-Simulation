@@ -1,5 +1,5 @@
 public class Card { 
-  // Private attribute
+  // Attribute
   private final int number;
 
   // Constructor
@@ -7,7 +7,7 @@ public class Card {
     this.number = number;
   }
 
-  // Get method for the card
+  // gets the card's number
   public int getNumber() {
     return number;
   }
