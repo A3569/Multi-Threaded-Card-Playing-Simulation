@@ -6,9 +6,9 @@ public class Player implements Runnable {
   // Private attribute
   private final int id;
   private final ArrayList<Card> cards;
+  private final CardGame cardGame;
   private final CardDeck drawDeck;
   private final CardDeck discardDeck;
-  private final CardGame cardGame;
   private FileWriter fw; 
 
   // Constructor
@@ -77,51 +77,54 @@ public class Player implements Runnable {
               fw.write("player " + id + " wins\n");
               System.out.println("player " + id + " wins");
             } else {
-              fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won \n");
+              fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won\n");
               System.out.println("player " + winnerID + " wins");
             }
-        
             fw.write("player " + id + " exits");
-            fw.write(this.getFinalCard());
+            fw.write(getFinalCard() + "\n");
             fw.close();
-          } else {
-            System.out.println("Invalid operation type.");
           }
     } catch (IOException e) {
-      System.out.println("Error occurred while handling the outputfile.");
+      System.err.println("Error writing output for player " + id);
       e.printStackTrace();
     }
-
-    // Creates a string for the player's initial hand
-    public String getInitialCard() {
-    StringBuilder initialCard = new StringBuilder("player ")
-        .append(id)
-        .append(" intial hand:");
-      for (Card card : cards) {
-        initialCard.append(" ").append(card.getNumber());
-      }
-      return initialCard.toString();
+  }
+  // Creates a string for the player's initial hand
+  public String getInitialCard() {
+    StringBuilder initialCard = new StringBuilder("player ").append(id).append(" intial hand:");
+    for (Card card : cards) {
+      initialCard.append(" ").append(card.getNumber());
     }
+    return initialCard.toString();
+  }
 
-    // Creates a string for the player's current hand
-    public String getCurrentCard() {
-    StringBuilder currentCard = new StringBuilder("player ")
-        .append(id)
-        .append(" current hand:");
-      for (Card card : cards) {
-        currentCard.append(" ").append(card.getNumber());
-      }
-      return currentCard.toString();
+  // Creates a string for the player's current hand
+  public String getCurrentCard() {
+    StringBuilder currentCard = new StringBuilder("player ").append(id).append(" current hand:");
+    for (Card card : cards) {
+      currentCard.append(" ").append(card.getNumber());
     }
+    return currentCard.toString();
+  }
 
-    // Creates a string for the player's final hand
-    public String getFinalCard() {
-    StringBuilder finalCard = new StringBuilder("player ")
-        .append(id)
-        .append(" final hand:");
-      for (Card card : cards) {
-        finalCard.append(" ").append(card.getNumber());
-      }
-      return finalCard.toString();
+  // Creates a string for the player's final hand
+  public String getFinalCard() {
+    StringBuilder finalCard = new StringBuilder("player ").append(id).append(" final hand:");
+    for (Card card : cards) {
+      finalCard.append(" ").append(card.getNumber());
+    }
+    return finalCard.toString();
+  }
+
+  @Override
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted() && !checkWin()) {
+                if (!playing()) break;
+            }
+        } catch (Exception e) {
+            System.err.println("Error during player " + id + "'s turn.");
+            e.printStackTrace();
+        }
     }
 }
