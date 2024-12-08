@@ -11,7 +11,7 @@ public class CardGame extend Thread {
   private int winnerId = -1;
 
   // Constructors
-  public Board(int playersNumber, String deckLocation) {
+  public CardGame(int playersNumber, String deckLocation) {
     players = new ArrayList<>();
     decks = new ArrayList<>();
 
