@@ -1,21 +1,10 @@
 import java.util.Scanner;
 
-// public class CardGame {
-//   // Main method to run the game
-//   public static void main (String[] args){
-//     System.out.println("Welcome to the Card Game!");
-//     System.out.println("Initializing the game...");
+public class CardGame {
+  // Attributes
+  
     
-//     try{
-      
-//     } catch (Exception e){
-//             e.printStackTrace();
-//         }
-//   }
-  // Starts and runs the game
-
-public class CardGame {                                             // when trying to run on VSC, keeps coming up that Main could not be loaded? Cuz there are two main method that creates ambiguity
-  public static void main(String[]args) {
+  public static void main (String[] args) {
       Scanner beginGame = new Scanner(System.in); 
       System.out.println("Welcome to the Card Game!");
       System.out.println("Please enter the number of players in the group:");
