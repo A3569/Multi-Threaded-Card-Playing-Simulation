@@ -1,54 +1,30 @@
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringBuilder;
 
 public class Player implements Runnable {
   // Private attribute
-  private final int id;            // identifier for players
-  private ArrayList<Card> card;    // holds the current hand of the player throughout the game
-  private CardDeck drawDeck;       // Decks used for drawing cards
-  private CardDeck discardDeck;    // Decks used for discarding cards
-  private CardGame cardGame;
+  private final int id;
+  private final ArrayList<Card> cards;
+  private final CardDeck drawDeck;
+  private final CardDeck discardDeck;
+  private final CardGame cardGame;
   private FileWriter fw; 
 
   // Constructor
-  public Player(int id, ArrayList<Card> card, CardDeck drawDeck, CardDeck discardDeck) {
+  public Player(int id, ArrayList<Card> cards, CardDeck drawDeck, CardDeck discardDeck, CardGame cardGame) {
     this.id = id;
-    this.card = new ArrayList<>(card);
+    this.card = new ArrayList<>(cards);
     this.drawDeck = drawDeck;
     this.discardDeck = discardDeck;
-  }
-
-  // gets player's ID
-  public int getID() {
-    return id;
-  }
-
-  //
-  public ArrayList<Card> getPlayerCards(){
-        return card;
-    }
-
-   // returns the deck the player draws cards from
-  public Deck getDrawDeck() {
-    return drawDeck;
-  }
-
-  // returns the deck the player discards cards to
-  public Deck getDiscardDeck() {
-    return discardDeck;
+    this.cardGame = cardGame;
   }
   
   // check if a player win
   public synchronized boolean checkWin() {
-    if(cards.size() != 4){
-      return false;
-    }
-    
+    if (cards.size() != 4) return false;
     int firstRank = cards.get(0).getNumber();
-    boolean allSame = cards.stream().allMatch(card -> card.getNumber() == firstRank);
-    if (allSame) {
+    if (cards.stream().allMatch(card -> card.getNumber() == firstRank)) {
       cardGame.finished(id);
       return true;
     }
@@ -57,23 +33,16 @@ public class Player implements Runnable {
 
   // handles the player's turn by discarding and drawing cards
   public synchronized boolean playing() {
-    if (Thread.currentThread().isInterrupted()) {
-        return false;
-    }
-
+    if (Thread.currentThread().isInterrupted()) return false;
     while (drawDeck.getCards().isEmpty()) {
-        if (Thread.currentThread().isInterrupted()) {
-            return false;
-        }
+        if (Thread.currentThread().isInterrupted()) return false;
     }
-
-    for(int i=0; i < cards.size(); i++){
+    for(int i = 0; i < cards.size(); i++) {
             if(cards.get(i).getNumber() != id){
-                Card drawDeck = cards.get(i);
-                discardDeck.addCard(cards.remove(i));
+                Card cardToDiscard = cards.remove(i);
+                discardDeck.addCard(cardToDiscard);
                 Card newCard = drawDeck.removeCard();
                 cards.add(newCard);
-
                 writeOutputfile("update", drawDeck, newCard, -1);
                 break;
             }
@@ -90,24 +59,22 @@ public class Player implements Runnable {
       }
       // write initial player's hand
       if ("create".equals(operation)) {
-        fw.write(this.getInitialCard() + "\n");
+        fw.write(getInitialCard() + "\n");
         System.out.println(getInitialCard());
-      }
-        // updates player's hand
-        else if ("update".equals(operation)) {
+      } else if ("update".equals(operation)) {
+          // updates player's hand
           fw.write("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
           System.out.println("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID());
-        
+       
           fw.write("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID() + "\n");
           System.out.println("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID());
         
-          fw.write(this.getCurrentCard() + "\n");
+          fw.write(getCurrentCard() + "\n");
           System.out.println(getCurrentCard());
-        } 
+        } else if ("finalize".equals(operation)) {
           // write the final hand and close the writer
-          else if ("finalize".equals(operation)) {
             if (winnerID == id) {
-              fw.write("player " + id + " wins" + "\n");
+              fw.write("player " + id + " wins\n");
               System.out.println("player " + id + " wins");
             } else {
               fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won \n");
