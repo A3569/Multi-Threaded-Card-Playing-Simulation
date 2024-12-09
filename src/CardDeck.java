@@ -64,7 +64,7 @@ public class CardDeck {
                 }
         }
 
-    // contain the contents of the deck at the end of the game
+    // contains the contents of the deck at the end of the game
     public synchronized String getFinalDeck() {
         StringBuilder finalDeck = new StringBuilder("Deck ")
                 .append(id)
