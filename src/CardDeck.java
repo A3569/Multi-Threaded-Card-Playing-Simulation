@@ -42,19 +42,19 @@ public class CardDeck {
 
   // writes the deck's final values to the file
   public synchronized void writeOutputFile() {
+    FileWriter fw = null;
     try{
-      if (fw == null) {
-        fw = new FileWriter("./output/deck" + id + "_output.txt", false);
-        fw.write(" ");
-        fw.close();
-        fw = new FileWriter("./output/deck" + id + "_output.txt", true);
-        fw.write(getFinalDeck());
-      }
-    } catch (IOException e) {
-      System.err.println("Error writing for deck " + id);
-      e.printStackTrace();
+      String filePath = "./output/deck" + id + "_output.txt";
+      fw = new FileWriter(filePath, false);
+      fw.write(" ");
+      fw.close();
+      fw = new FileWriter(filePath, true);
+      fw.write(getFinalDeck());
     }
-  }
+  } catch (IOException e) {
+  System.err.println("Error writing for deck " + id);
+  e.printStackTrace();
+}
 
   // contain the contents of the deck at the end of the game
   public synchronized String getFinalDeck() {
