@@ -50,11 +50,11 @@ public class CardDeck {
       fw.close();
       fw = new FileWriter(filePath, true);
       fw.write(getFinalDeck());
-    }
-  } catch (IOException e) {
-  System.err.println("Error writing for deck " + id);
-  e.printStackTrace();
-}
+    } catch (IOException e) {
+    	System.err.println("Error writing for deck " + id);
+    	e.printStackTrace();
+    	}
+  }
 
   // contain the contents of the deck at the end of the game
   public synchronized String getFinalDeck() {
