@@ -23,7 +23,7 @@ public class CardGame {
     }
     // creates decks
     for (int i = 1; i <= playersNumber; i++) {
-      decks.add(new Deck(i));
+      decks.add(new CardDeck(i));
     }
     // distributes cards to players
     for (int i = 0; i < playersNumber; i++) {
