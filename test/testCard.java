@@ -1,7 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class testCard {
+public class TestCard {
 	@Test
     public void testCardInitialization() {
         // Test that the card initializes correctly
