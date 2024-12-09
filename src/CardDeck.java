@@ -45,7 +45,7 @@ public class CardDeck {
     try{
       if (fw == null) {
         fw = new FileWriter("./output/deck" + id + "_output.txt", false);
-        fw = write(" ");
+        fw.write(" ");
         fw.close();
         fw = new FileWriter("./output/deck" + id + "_output.txt", true);
         fw.write(getFinalDeck());
