@@ -3,7 +3,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import static org.junit.Assert.*;
 
-public class testPlayer {
+public class TestPlayer {
 	// Private attributes
     private Player player;
     private CardDeck drawDeck;
@@ -14,9 +14,9 @@ public class testPlayer {
     @Before
     public void setUp() {
     	// Initializes player with cards and decks
-        drawDeck = new CardDeck(1);
+    	cardGame = null;
+    	drawDeck = new CardDeck(2);
         discardDeck = new CardDeck(2);
-        cardGame = new CardGame();
         playerCards = new ArrayList<>();
         playerCards.add(new Card(1));
         playerCards.add(new Card(1));
@@ -24,19 +24,24 @@ public class testPlayer {
         playerCards.add(new Card(1));
         drawDeck.addCard(new Card(2));
         drawDeck.addCard(new Card(3));
-        player = new Player(1, playerCards, drawDeck, discardDeck, cardGame);
+        player = new Player(1, drawDeck, playerCards, discardDeck, cardGame);
     }
 
     @Test
     public void testCheckWin_Win() {
     	// Verifies the win condition when all cards are the same
+    	player.getPlayerCards().clear();
+        player.getPlayerCards().add(new Card(1));
+        player.getPlayerCards().add(new Card(1));
+        player.getPlayerCards().add(new Card(1));
+        player.getPlayerCards().add(new Card(1));
         assertTrue(player.checkWin());
     }
 
     @Test
     public void testCheckWin_NotWin() {
         // Verifies the win condition when cards are different
-        player.getPlayerCards().set(0, new Card(2));
+        player.getPlayerCards().set(0, new Card(3));
         assertFalse(player.checkWin());
     }
 
@@ -54,10 +59,10 @@ public class testPlayer {
 
     @Test
     public void testWriteOutputfile() {
-    	// Tests writeoutputfile() runs without exception
-        player.writeOutputfile("create", drawDeck, null, -1);
-        player.writeOutputfile("update", drawDeck, new Card(5), -1);
-        player.writeOutputfile("finalize", null, null, 1);
+    	// Tests writeoutputFile() runs without exception
+        player.writeOutputFile("create", drawDeck, null, -1);
+        player.writeOutputFile("update", drawDeck, new Card(2), -1);
+        player.writeOutputFile("finalize", null, null, 1);
         assertTrue(true);
     }
     
