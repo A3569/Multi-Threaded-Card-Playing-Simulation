@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 
 public class CardDeck {
     // Attributes
@@ -41,18 +42,27 @@ public class CardDeck {
 
     // writes the deck's final values to the file
     public synchronized void writeOutputFile() {
-        try {
-            String filePath = "./output/deck" + id + "_output.txt";
-            try (FileWriter fw = new FileWriter(filePath, false)) {
-                fw.write(" ");
+        try{
+        	File outputDir = new File("./output");
+            if (!outputDir.exists()) {
+                outputDir.mkdirs();
             }
-            try (FileWriter fw = new FileWriter(filePath, true)) {
+
+            File newFile = new File("./output/deck"+id+"_output.txt");
+        	if(newFile.createNewFile()){
+                System.out.println("File is created");
+            } else {
+                System.out.println("File is already exists");
+            }
+
+        	try (FileWriter fw = new FileWriter(newFile)) {
                 fw.write(getFinalDeck());
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing for deck " + id);
+        	}
+        	} catch (IOException e) {
+                System.err.println("Error writing for deck " + id);
+                e.printStackTrace();
+                }
         }
-    }
 
     // contain the contents of the deck at the end of the game
     public synchronized String getFinalDeck() {
