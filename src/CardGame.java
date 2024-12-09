@@ -9,6 +9,14 @@ public class CardGame {
     private final ArrayList<CardDeck> decks;
     private boolean gameFinished = false;
     private int winnerID = -1;
+    
+    public boolean finished() {
+        return gameFinished;
+    }
+
+    public int getWinnerId() {
+        return winnerID;
+    }
 
     // Constructors
     public CardGame(int playersNumber, String deckLocation) {
