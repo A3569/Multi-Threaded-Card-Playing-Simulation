@@ -27,6 +27,7 @@ public class CardGame {
         ArrayList<Card> cardPack = readCardPack(deckLocation, playersNumber);
         if (cardPack == null) {
             System.out.println("Failed to initialize game");
+            gameFinished = true;
             return;
         }
         // creates decks
@@ -52,6 +53,7 @@ public class CardGame {
             String deckLocation = beginning.nextLine();
             CardGame game = new CardGame(playersNumber, deckLocation);
             game.play();
+            beginning.close();
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter valid number of players.");
         } catch (Exception e){
