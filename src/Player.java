@@ -13,7 +13,7 @@ public class Player implements Runnable {
 
     // Constructors
     public Player(int id, CardDeck drawDeck, ArrayList<Card> cards, CardDeck discardDeck, CardGame cardGame) {
-        this.id = id;
+    	this.id = id;
         this.drawDeck = drawDeck;
         this.cards = new ArrayList<>(cards);
         this.discardDeck = discardDeck;
@@ -45,7 +45,9 @@ public class Player implements Runnable {
         if (cards.size() != 4) return false;
         int firstRank = cards.get(0).getNumber();
         if (cards.stream().allMatch(card -> card.getNumber() == firstRank)) {
-            cardGame.finished(id);
+        	if (cardGame != null) {
+                cardGame.finished(id);
+            }
             return true;
         }
         return false;
@@ -93,8 +95,8 @@ public class Player implements Runnable {
                 System.out.println(getInitialCard());
             } else if ("update".equals(operation)) {
                 // updates player's hand
-                fw.write("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
-                System.out.println("player " + id + " draws " + newCard.getNumber() + " from deck " + drawDeck.getID());
+                fw.write("player " + id + " draws a " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
+                System.out.println("player " + id + " draws a " + newCard.getNumber() + " from deck " + drawDeck.getID());
 
                 fw.write("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID() + "\n");
                 System.out.println("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID());
@@ -110,7 +112,7 @@ public class Player implements Runnable {
                     fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won\n");
                     System.out.println("player " + winnerID + " wins");
                 }
-                fw.write("player " + id + " exits");
+                fw.write("player " + id + " exits" + "\n");
                 fw.write(getFinalCard() + "\n");
                 fw.close();
             }
