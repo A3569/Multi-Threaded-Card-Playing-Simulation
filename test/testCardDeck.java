@@ -3,7 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 import java.io.File;
 
-public class testCardDeck {
+public class TestCardDeck {
     private CardDeck carddeck;
 
     @Before
