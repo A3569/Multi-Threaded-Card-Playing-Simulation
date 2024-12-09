@@ -13,7 +13,7 @@ public class TestPlayer {
 
     @Before
     public void setUp() {
-    	// Initializes player with cards and decks
+    	// initializes player with cards and decks
     	cardGame = null;
     	drawDeck = new CardDeck(2);
         discardDeck = new CardDeck(2);
@@ -29,7 +29,7 @@ public class TestPlayer {
 
     @Test
     public void testCheckWin_Win() {
-    	// Verifies the win condition when all cards are the same
+    	// verifies the win condition when all cards are the same
     	player.getPlayerCards().clear();
         player.getPlayerCards().add(new Card(1));
         player.getPlayerCards().add(new Card(1));
@@ -40,26 +40,26 @@ public class TestPlayer {
 
     @Test
     public void testCheckWin_NotWin() {
-        // Verifies the win condition when cards are different
+        // verifies the win condition when cards are different
         player.getPlayerCards().set(0, new Card(3));
         assertFalse(player.checkWin());
     }
 
     @Test
     public void testGetPlayerCards() {
-    	// Ensures the get method returns the correct card
+    	// ensures the get method returns the correct card
         assertEquals(playerCards, player.getPlayerCards());
     }
 
     @Test
     public void testPlaying_UpdateCards() {
-    	// Tests playing() to verify card is updated
+    	// tests playing() to verify card is updated
         assertTrue(player.playing());
     }
 
     @Test
     public void testWriteOutputfile() {
-    	// Tests writeoutputFile() runs without exception
+    	// tests writeoutputFile() runs without exception
         player.writeOutputFile("create", drawDeck, null, -1);
         player.writeOutputFile("update", drawDeck, new Card(2), -1);
         player.writeOutputFile("finalize", null, null, 1);
@@ -68,7 +68,7 @@ public class TestPlayer {
     
     @Test
     public void testPlayerRunnable(){
-    	// Tests run() is thread-safe
+    	// tests run() is thread-safe
         Thread playerthread = new Thread(player);
         playerthread.start();
         try {
