@@ -8,7 +8,8 @@ public class testCardDeck {
 
     @Before
     public void setUp() {
-    	carddeck = new CardDeck(1); // Create a deck with ID 1
+    	// Create a deck with ID 1
+    	carddeck = new CardDeck(1); 
     }
 
     @Test
@@ -21,11 +22,11 @@ public class testCardDeck {
     @Test
     public void testRemoveCard() {
         Card card1 = new Card(3);
-        Card card2 = new Card(7);
+        Card card2 = new Card(2);
         carddeck.addCard(card1);
         carddeck.addCard(card2);
         assertEquals(3, carddeck.removeCard().getNumber());
-        assertEquals("Deck 1 contents: 7", carddeck.getFinalDeck());
+        assertEquals("Deck 1 contents: 2", carddeck.getFinalDeck());
     }
 
     @Test
@@ -42,7 +43,7 @@ public class testCardDeck {
     @Test
     public void testWriteOutputFile() {
         Card card1 = new Card(3);
-        Card card2 = new Card(7);
+        Card card2 = new Card(1);
         carddeck.addCard(card1);
         carddeck.addCard(card2);
         carddeck.writeOutputFile();
