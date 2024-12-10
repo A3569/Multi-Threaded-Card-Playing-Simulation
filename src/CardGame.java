@@ -1,161 +1,125 @@
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
 
-public class Player implements Runnable {
+public class CardGame {
     // Attributes
-    private final int id;
-    private final CardDeck drawDeck;
-    private final ArrayList<Card> cards;
-    private final CardDeck discardDeck;
-    private final CardGame cardGame;
-    private FileWriter fw;
+    private final ArrayList<Player> players;
+    private final ArrayList<CardDeck> decks;
+    private boolean gameFinished = false;
+    private int winnerID = -1;
+    
+    public boolean finished() {
+        return gameFinished;
+    }
+
+    public int getWinnerId() {
+        return winnerID;
+    }
 
     // Constructors
-    public Player(int id, CardDeck drawDeck, ArrayList<Card> cards, CardDeck discardDeck, CardGame cardGame) {
-    	this.id = id;
-        this.drawDeck = drawDeck;
-        this.cards = new ArrayList<>(cards);
-        this.discardDeck = discardDeck;
-        this.cardGame = cardGame;
+    public CardGame(int playersNumber, String deckLocation) {
+        players = new ArrayList<>();
+        decks = new ArrayList<>();
+
+        // reads the card pack
+        ArrayList<Card> cardPack = readCardPack(deckLocation, playersNumber);
+        if (cardPack == null) {
+            System.out.println("Failed to initialize game");
+            gameFinished = true;
+            return;
+        }
+        // creates decks
+        for (int i = 1; i <= playersNumber; i++) {
+            decks.add(new CardDeck(i));
+        }
+        // distributes cards to players
+        for (int i = 0; i < playersNumber; i++) {
+            ArrayList<Card> hand = new ArrayList<>(cardPack.subList(i * 4, i * 4 + 4));
+            CardDeck drawDeck = (i == 0) ? decks.get(decks.size() - 1) : decks.get(i - 1);
+            CardDeck discardDeck = decks.get(i);
+            players.add(new Player(i + 1, drawDeck, hand, discardDeck, this));
+        }
     }
 
-    // allows interaction with the player's ID
-    public int getID(){
-        return id;
+    // main method as the program's entry point
+    public static void main(String[] args) {
+        try {
+            Scanner beginning = new Scanner(System.in);
+            System.out.println("Enter the number of players: ");
+            int playersNumber = Integer.parseInt(beginning.nextLine());
+            System.out.println("Please enter location of pack to load:");
+            String deckLocation = beginning.nextLine();
+            CardGame game = new CardGame(playersNumber, deckLocation);
+            game.play();
+            beginning.close();
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter valid number of players.");
+        } catch (Exception e){
+            System.out.println("An error occurred: " + e.getMessage());
+        }
     }
 
-    // allows interaction with drawing a deck
-    public CardDeck getDrawDeck(){
-        return drawDeck;
-    }
-
-    // allows interaction with discarding a deck
-    public CardDeck getDiscardDeck(){
-        return discardDeck;
-    }
-
-    // allows interaction with the player's card
-    public synchronized ArrayList<Card> getPlayerCards(){
+    // reads a card pack from a file
+    private ArrayList<Card> readCardPack(String deckLocation, int playersNumber) {
+        ArrayList<Card> cards = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(deckLocation))) {
+            while (scanner.hasNextInt()) {
+                int number = scanner.nextInt();
+                if (number <= 0) {
+                    throw new IllegalArgumentException("Invalid card number");
+                }
+                cards.add(new Card(number));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Card pack file not found: " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            System.out.println("Error reading card pack: " + e.getMessage());
+            return null;
+        }
+        if (cards.size() != playersNumber * 8) {
+            System.out.println("Invalid card pack size.");
+            return null;
+        }
         return cards;
     }
 
-    // checks if a player win
-    public synchronized boolean checkWin() {
-        if (cards.size() != 4) return false;
-        int firstRank = cards.get(0).getNumber();
-        if (cards.stream().allMatch(card -> card.getNumber() == firstRank)) {
-        	if (cardGame != null) {
-                cardGame.finished(id);
-            }
-            return true;
+    // main game logic
+    public void play() {
+        ArrayList<Thread> playerThreads = new ArrayList<>();
+        for (Player player : players) {
+            Thread thread = new Thread(player);
+            playerThreads.add(thread);
+            thread.start();
         }
-        return false;
-    }
-
-    // handles the player's turn by discarding and drawing cards
-    public synchronized boolean playing() {
-        if (Thread.currentThread().isInterrupted()) return false;
-        while (drawDeck.getCards().isEmpty()) {
-            if (Thread.currentThread().isInterrupted()) return false;
+        for (Thread thread : playerThreads) {
             try {
-                wait();
+                thread.join();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return false;
+                System.out.println("Thread interrupted: " + e.getMessage());
             }
         }
-        for(int i = 0; i < cards.size(); i++) {
-            if(cards.get(i).getNumber() != id){
-                Card cardToDiscard = cards.remove(i);
-                discardDeck.addCard(cardToDiscard);
-                Card newCard = drawDeck.removeCard();
-                cards.add(newCard);
-                writeOutputFile("update", drawDeck, newCard, -1);
-                break;
-            }
-        }
-        return true;
+        System.out.println("Player " + winnerID + "has won");
+        writeGameSummary();
     }
 
-    // resets, creates, updates, and closes the player's output file
-    public synchronized void writeOutputFile(String operation, CardDeck drawDeck, Card newCard, int winnerID) {
-        try{
-            // create player's output file
-            if (fw == null) {
-                // Clear the file by writing nothing
-                fw = new FileWriter("./output/player" + id + "_output.txt", false);
-                fw.write("");
-                fw.close();
-                fw = new FileWriter("./output/player" + id + "_output.txt", true);
-            }
-            // write initial player's hand
-            if ("create".equals(operation)) {
-                fw.write(getInitialCard() + "\n");
-                System.out.println(getInitialCard());
-            } else if ("update".equals(operation)) {
-                // updates player's hand
-                fw.write("player " + id + " draws a " + newCard.getNumber() + " from deck " + drawDeck.getID() + "\n");
-                System.out.println("player " + id + " draws a " + newCard.getNumber() + " from deck " + drawDeck.getID());
-
-                fw.write("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID() + "\n");
-                System.out.println("player " + id + " discards a " + newCard.getNumber() + " to deck " + discardDeck.getID());
-
-                fw.write(getCurrentCard() + "\n");
-                System.out.println(getCurrentCard());
-            } else if ("finalize".equals(operation)) {
-                // write the final hand and close the writer
-                if (winnerID == id) {
-                    fw.write("player " + id + " wins\n");
-                    System.out.println("player " + id + " wins");
-                } else {
-                    fw.write("player " + winnerID + " has informed player" + id + " that player " + winnerID + " has won\n");
-                    System.out.println("player " + winnerID + " wins");
-                }
-                fw.write("player " + id + " exits" + "\n");
-                fw.write(getFinalCard() + "\n");
-                fw.close();
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing output for player " + id);
+    // notifies the game is finished
+    public synchronized void finished(int playerID) {
+        if (!gameFinished) {
+            gameFinished = true;
+            winnerID = playerID;
         }
     }
 
-    // creates a string for the player's initial hand
-    public String getInitialCard() {
-        StringBuilder initialCard = new StringBuilder("player ").append(id).append(" initial hand:");
-        for (Card card : cards) {
-            initialCard.append(" ").append(card.getNumber());
+    // writes final game summary to the output file
+    public void writeGameSummary() {
+        for(Player player : players) {
+            player.writeOutputFile("finalize", null, null, winnerID);
         }
-        return initialCard.toString();
-    }
-
-    // creates a string for the player's current hand
-    public String getCurrentCard() {
-        StringBuilder currentCard = new StringBuilder("player ").append(id).append(" current hand:");
-        for (Card card : cards) {
-            currentCard.append(" ").append(card.getNumber());
-        }
-        return currentCard.toString();
-    }
-
-    // creates a string for the player's final hand
-    public String getFinalCard() {
-        StringBuilder finalCard = new StringBuilder("player ").append(id).append(" final hand:");
-        for (Card card : cards) {
-            finalCard.append(" ").append(card.getNumber());
-        }
-        return finalCard.toString();
-    }
-
-    // implements threads
-    public void run() {
-        try {
-            while (!Thread.currentThread().isInterrupted() && !checkWin()) {
-                if (!playing()) break;
-            }
-        } catch (Exception e) {
-            System.err.println("Error during player " + id + "'s turn.");
+        for(CardDeck deck: decks) {
+            deck.writeOutputFile();
         }
     }
 }
