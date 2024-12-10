@@ -1,12 +1,19 @@
 
 MyProject/
 ├── src/
+
 │   ├── Card.java
+
 │   ├── Player.java
+
 ├── bin/
+
 │   ├── Card.class
+
 │   ├── Player.class
+
 ├── 
+
 ├── cards.jar
 
 
