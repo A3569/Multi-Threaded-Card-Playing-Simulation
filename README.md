@@ -1,21 +1,14 @@
-
+~~~
 MyProject/
 ├── src/
-
 │   ├── Card.java
-
 │   ├── Player.java
-
 ├── bin/
-
 │   ├── Card.class
-
 │   ├── Player.class
-
 ├── 
-
 ├── cards.jar
-
+~~~
 
 1. cards.jar (executable and include both the .class and .java of your submission)
 2. Report (minimum 2cm margins and 11-point text)
