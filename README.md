@@ -39,7 +39,6 @@ To win the game, **A player needs four cards of the same value in their hand**.
 - If a player is given four cards which are all the same value at the start of the game, the winner then notify the other players that he has won and exit the game.
 - If two player are given four cards which are all the same value at the start of the game, then restarts the game.
 - If the game is not won immediately, then the game continuous.
-- The card players discard must display a value which is not of their preferred denomination, and a player must not hold onto a non-preferred denomination card indefinitely, otherwise the game may stagnate.
 
 ## Example of running Game.jar
 ~~~
