@@ -47,3 +47,22 @@ Enter the number of players:
 Please enter location of pack to load:
 cards.txt
 ~~~
+#### 1. Using the Command Line (Recommended)
+   
+~~~
+java -jar Game.jar
+~~~
+
+#### 2. Double-Click (On GUI-Based OS)
+    - On Windows, if Java is installed, double-click the .jar file.
+    - On Mac/Linux, right-click → "Open With" → Choose Java.
+
+#### 3. Running with a Specific Java Version
+If you have multiple Java versions installed, you can run a JAR with a specific one:
+
+~~~
+"C:\Path\To\Java\bin\java" -jar yourfile.jar  # Windows
+~~~
+~~~
+/Path/To/Java/bin/java -jar yourfile.jar  # Linux/Mac
+~~~
